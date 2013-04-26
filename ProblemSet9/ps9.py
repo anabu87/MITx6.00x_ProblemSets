@@ -179,7 +179,26 @@ def simulationTwoDrugsDelayedTreatment(numTrials):
                 # guttagonol_virus_pop[cond][time] += p.getResistPop(['guttagonol'])
                 # grimpex_virus_pop[cond][time] += p.getResistPop(['grimpex'])
                 time += 1
-        final_virus_pops[cond][i] = p.getTotalPop()
+            final_virus_pops[cond][i] = p.getTotalPop()
+
+
+    # for cond in conditions:
+    #     for t in range(150 + cond + 150):
+    #         average_size_virus_pop[cond][t] = float(total_virus_pop[cond][t]) / float(numTrials)
+    #         average_size_guttagonol[cond][t] = float(guttagonol_virus_pop[cond][t]) / float(numTrials)
+    #         average_size_grimpex[cond][t] = float(grimpex_virus_pop[cond][t]) / float(numTrials)
+
+    # # Draw the plot
+    # for cond in conditions:        
+    #     pylab.figure('two durg plot delays %s' % cond)
+    #     x = [time for time in range(150 + cond + 150)]
+    #     pylab.plot(x, average_size_virus_pop[cond], label='total virus population')
+    #     pylab.plot(x, average_size_guttagonol[cond], label='guttagonol-resistant virus population')
+    #     pylab.plot(x, average_size_grimpex[cond], label='grimpex-resistant virus population')
+    #     pylab.title('SIMULATION WITH A DRUG')
+    #     pylab.xlabel('Time Steps')
+    #     pylab.ylabel('Virus Population')
+    #     pylab.legend()
 
 
     # Draw the histogram
