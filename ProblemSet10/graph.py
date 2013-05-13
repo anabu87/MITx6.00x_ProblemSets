@@ -61,6 +61,96 @@ class Digraph(object):
     def __str__(self):
         res = ''
         for k in self.edges:
-            for d in self.edges[str(k)]:
+            for d in self.edges[k]:
                 res = '{0}{1}->{2}\n'.format(res, k, d)
         return res[:-1]
+
+# Problem 1
+
+class WeightedDigraph(Digraph):
+    """
+    A weighted directed graph
+    """
+    def __init__(self):
+        Digraph.__init__(self)
+        # self.weighted = {}
+
+    def addEdge(self, edge):
+        src = edge.getSource()
+        dest = edge.getDestination()
+        if not(src in self.nodes and dest in self.nodes):
+            raise ValueError('Node not in graph')
+        self.edges[src].append((dest, edge))
+        # self.weighted.setdefault((src, dest), [])
+        # self.weighted[(src, dest)].append((float(edge.getTotalDistance()), float(edge.getOutdoorDistance())))
+
+    def childrenOf(self, node):
+        children = []
+        for n, e in self.edges[node]:
+            children.append(n)
+        return children
+
+    def __str__(self):
+        res = ''
+        for k in self.edges:
+            for d, edge in self.edges[k]:
+                res = "{0}{1}->{2} ({3}, {4})\n".format(res, k, d, float(edge.getTotalDistance()), float(edge.getOutdoorDistance()))
+        return res[:-1]        
+
+
+class WeightedEdge(Edge):
+    """
+    A edge with weight
+    """
+    def __init__(self, src, dest, distance, distance_outdoors):
+        Edge.__init__(self, src, dest)
+        self.distance = distance
+        self.distance_outdoors = distance_outdoors
+
+    def getTotalDistance(self):
+        """
+        return total distance
+        """
+        return self.distance
+
+    def getOutdoorDistance(self):
+        """
+        return outdoors distance
+        """
+        return self.distance_outdoors
+
+    def __str__(self):
+        return Edge.__str__(self) + " ({0}, {1})".format(self.distance,
+                                                         self.distance_outdoors)
+
+
+
+if __name__ == '__main__':
+    nj = Node('j')
+    nk = Node('k')
+    nm = Node('m')
+    ng = Node('g')
+    g = WeightedDigraph()
+    g.addNode(nj)
+    g.addNode(nk)
+    g.addNode(nm)
+    g.addNode(ng)
+    randomEdge = WeightedEdge(nm, ng, 79, 14)
+    g.addEdge(randomEdge)
+    randomEdge = WeightedEdge(nk, ng, 68, 24)
+    g.addEdge(randomEdge)
+    randomEdge = WeightedEdge(nj, nm, 16, 16)
+    g.addEdge(randomEdge)
+    randomEdge = WeightedEdge(nk, ng, 19, 5)
+    g.addEdge(randomEdge)
+    randomEdge = WeightedEdge(nk, nm, 26, 23)
+    g.addEdge(randomEdge)
+    randomEdge = WeightedEdge(nj, ng, 34, 16)
+    g.addEdge(randomEdge)
+    randomEdge = WeightedEdge(nj, nk, 70, 29)
+    g.addEdge(randomEdge)
+    randomEdge = WeightedEdge(nj, ng, 97, 46)
+    g.addEdge(randomEdge)
+    print g.edges
+    print g
+
