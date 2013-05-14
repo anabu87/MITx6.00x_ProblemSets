@@ -17,6 +17,8 @@ class Node(object):
         return self.name == other.name
     def __ne__(self, other):
         return not self.__eq__(other)
+    # def __hash__(self):
+    #     return self.name.__hash__()
 
 class Edge(object):
     def __init__(self, src, dest):
@@ -73,16 +75,13 @@ class WeightedDigraph(Digraph):
     """
     def __init__(self):
         Digraph.__init__(self)
-        # self.weighted = {}
-
+            
     def addEdge(self, edge):
         src = edge.getSource()
         dest = edge.getDestination()
         if not(src in self.nodes and dest in self.nodes):
             raise ValueError('Node not in graph')
-        self.edges[src].append((dest, edge))
-        # self.weighted.setdefault((src, dest), [])
-        # self.weighted[(src, dest)].append((float(edge.getTotalDistance()), float(edge.getOutdoorDistance())))
+        self.edges[src].append([dest, (float(edge.getTotalDistance()), float(edge.getOutdoorDistance()))])
 
     def childrenOf(self, node):
         children = []
@@ -93,8 +92,8 @@ class WeightedDigraph(Digraph):
     def __str__(self):
         res = ''
         for k in self.edges:
-            for d, edge in self.edges[k]:
-                res = "{0}{1}->{2} ({3}, {4})\n".format(res, k, d, float(edge.getTotalDistance()), float(edge.getOutdoorDistance()))
+            for d, cost in self.edges[k]:
+                res = "{0}{1}->{2} ({3}, {4})\n".format(res, k, d, float(cost[0]), float(cost[1]))
         return res[:-1]        
 
 
@@ -130,11 +129,14 @@ if __name__ == '__main__':
     nk = Node('k')
     nm = Node('m')
     ng = Node('g')
+    nnj = Node('j')
     g = WeightedDigraph()
     g.addNode(nj)
     g.addNode(nk)
     g.addNode(nm)
     g.addNode(ng)
+    print g.hasNode(nnj)
+    g.addNode(nnj)
     randomEdge = WeightedEdge(nm, ng, 79, 14)
     g.addEdge(randomEdge)
     randomEdge = WeightedEdge(nk, ng, 68, 24)
@@ -151,6 +153,8 @@ if __name__ == '__main__':
     g.addEdge(randomEdge)
     randomEdge = WeightedEdge(nj, ng, 97, 46)
     g.addEdge(randomEdge)
+    print g.nodes
     print g.edges
     print g
+
 
