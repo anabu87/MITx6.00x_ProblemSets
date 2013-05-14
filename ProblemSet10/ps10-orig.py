@@ -13,6 +13,10 @@ from graph import *
 # Before you write any code, write a couple of sentences here 
 # describing how you will model this problem as a graph. 
 
+# 1.load the campus map datas from file .
+# 2.parse datas from file to build a graph.
+
+
 # This is a helpful exercise to help you organize your
 # thoughts before you tackle a big design problem!
 #
@@ -37,7 +41,35 @@ def load_map(mapFilename):
     """
     # TODO
     print "Loading map from file..."
-        
+    infile = open('mit_map.txt', 'r')
+    graph = WeightedDigraph() 
+    # parse data
+    for line in infile:
+        datas = line.split()
+        src , dest, totalDistance, distanceOutdoors = datas
+        src_node = Node(src)
+        dest_node = Node(dest)
+        src_in_graph = False
+        dest_in_graph = False
+
+        for n in graph.nodes:
+            node_name = n.getName()
+            if src == node_name:
+                src_node = n
+                src_in_graph = True
+            if dest == node_name:
+                dest_node = n
+                dest_in_graph = True
+
+        if not src_in_graph:
+            graph.addNode(src_node)
+        if not dest_in_graph:
+            graph.addNode(dest_node)
+        edge = WeightedEdge(src_node, dest_node, int(totalDistance), int(distanceOutdoors))
+        graph.addEdge(edge)
+
+    return graph
+
 
 #
 # Problem 3: Finding the Shortest Path using Brute Force Search
@@ -106,13 +138,13 @@ def directedDFS(digraph, start, end, maxTotalDist, maxDistOutdoors):
 
 # Uncomment below when ready to test
 #### NOTE! These tests may take a few minutes to run!! ####
-# if __name__ == '__main__':
-#     Test cases
-#     mitMap = load_map("mit_map.txt")
-#     print isinstance(mitMap, Digraph)
-#     print isinstance(mitMap, WeightedDigraph)
-#     print 'nodes', mitMap.nodes
-#     print 'edges', mitMap.edges
+if __name__ == '__main__':
+    # Test cases
+    mitMap = load_map("mit_map.txt")
+    print isinstance(mitMap, Digraph)
+    print isinstance(mitMap, WeightedDigraph)
+    print 'nodes', mitMap.nodes
+    print 'edges', mitMap.edges
 
 
 #     LARGE_DIST = 1000000
